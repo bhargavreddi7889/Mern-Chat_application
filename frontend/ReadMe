@@ -1,0 +1,104 @@
+# MERN Chat Application
+
+## 📌 Overview
+The **MERN Chat Application** is a real-time messaging platform built using the **MERN stack** (MongoDB, Express.js, React, and Node.js). It supports **one-on-one and group chat**, user authentication, and multimedia sharing.
+
+## 🚀 Features
+- **User Authentication** (Sign Up, Login, JWT-based Authentication)
+- **Real-time Messaging** using Socket.io
+- **One-on-One & Group Chat Support**
+- **Media Uploads** (Images, Files using Cloudinary)
+- **Online/Offline Status Indication**
+- **Responsive UI** built with React and TailwindCSS
+- **MongoDB Atlas for Database**
+
+## 🛠️ Tech Stack
+### **Frontend:**
+- React.js
+- Tailwind CSS
+- Zustand for state management
+- Axios for API requests
+
+### **Backend:**
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Socket.io for real-time communication
+- Cloudinary for media storage
+- JWT Authentication
+
+## 📂 Folder Structure
+```
+fullstack-chat-app/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/     # API controllers
+│   │   ├── models/          # MongoDB models
+│   │   ├── routes/          # Express routes
+│   │   ├── middleware/      # Authentication & other middlewares
+│   │   ├── lib/             # Utility functions & services (e.g., Socket, Cloudinary)
+│   │   ├── server.js        # Main server file
+│   ├── package.json
+│   ├── .env.example        # Environment variables (rename to .env)
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── pages/           # Application pages
+│   │   ├── store/           # Zustand store for state management
+│   │   ├── App.jsx          # Main React App component
+│   ├── package.json
+│
+├── README.md
+├── .gitignore
+```
+
+## 🔧 Setup Instructions
+### **1. Clone the Repository**
+```sh
+git clone https://github.com/bhargavreddi7889/Mern-Chat_application.git
+cd Mern-Chat_application
+```
+
+### **2. Backend Setup**
+```sh
+cd backend
+npm install  # Install dependencies
+cp .env.example .env  # Create .env file and configure it
+node src/server.js  # Start the server
+```
+
+### **3. Frontend Setup**
+```sh
+cd ../frontend
+npm install  # Install dependencies
+npm run dev  # Start the frontend
+```
+
+### **4. Running the Application**
+- Open **http://localhost:3000/** in your browser to access the chat application.
+- Backend runs on **http://localhost:5000/** by default.
+
+## ⚡ API Endpoints
+| Endpoint             | Method | Description             |
+|---------------------|--------|-------------------------|
+| `/api/auth/register` | POST   | User Registration       |
+| `/api/auth/login`    | POST   | User Login             |
+| `/api/users`        | GET    | Get all users          |
+| `/api/messages`     | POST   | Send message           |
+| `/api/groups`       | POST   | Create Group Chat      |
+
+## 🌟 Features to be Added
+- **Typing Indicator**
+- **Message Reactions**
+- **Push Notifications**
+
+## 📝 License
+This project is licensed under the **MIT License**.
+
+## 🙌 Contributions
+Contributions, issues, and feature requests are welcome! Feel free to fork this repository and submit a pull request.
+
+---
+🚀 **Developed by [Bhargav Reddy](https://github.com/bhargavreddi7889)**
+
