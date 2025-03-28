@@ -1,27 +1,34 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema(
-  {
-    senderId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    receiverId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    text: {
-      type: String,
-    },
-    image: {
-      type: String,
-    },
+const messageSchema = new mongoose.Schema({
+  senderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
   },
-  { timestamps: true }
-);
+  receiverId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
+  groupId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Group"
+  },
+  text: {
+    type: String,
+    default: ""
+  },
+  image: {
+    type: String,
+    default: ""
+  }
+}, {
+  timestamps: true
+});
 
-const Message = mongoose.model("Message", messageSchema);
+// Add indexes for faster querying
+messageSchema.index({ senderId: 1, receiverId: 1 });
+messageSchema.index({ groupId: 1 });
+messageSchema.index({ createdAt: 1 });
 
-export default Message;
+export const Message = mongoose.model("Message", messageSchema);

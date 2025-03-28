@@ -12,6 +12,8 @@ const SignUpPage = () => {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
+    gender: "male", // Default to male
   });
 
   const { signup, isSigningUp } = useAuthStore();
@@ -23,6 +25,7 @@ const SignUpPage = () => {
     if (!/\S+@\S+\.\S+/.test(formData.email)) return toast.error("Invalid email format");
     if (!formData.password) return toast.error("Password is required");
     if (formData.password.length < 6) return toast.error("Password must be at least 6 characters");
+    if (formData.password !== formData.confirmPassword) return toast.error("Passwords don't match");
     return true;
   };
 
@@ -68,7 +71,7 @@ const SignUpPage = () => {
               <label className="label"><span className="label-text font-medium">Email</span></label>
               <div className="relative">
                 <Mail className="size-5 text-base-content/40 absolute inset-y-0 left-0 pl-3" />
-                <input type="email" className="input input-bordered w-full pl-10" placeholder="E-mail"
+                <input type="email" className="input input-bordered w-full pl-10" placeholder="you@example.com"
                   value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
               </div>
             </div>
@@ -83,6 +86,33 @@ const SignUpPage = () => {
                   onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <EyeOff className="size-5 text-base-content/40" /> : <Eye className="size-5 text-base-content/40" />}
                 </button>
+              </div>
+            </div>
+
+            <div className="form-control">
+              <label className="label"><span className="label-text font-medium">Confirm Password</span></label>
+              <div className="relative">
+                <Lock className="size-5 text-base-content/40 absolute inset-y-0 left-0 pl-3" />
+                <input type={showPassword ? "text" : "password"} className="input input-bordered w-full pl-10" placeholder="••••••••"
+                  value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} />
+              </div>
+            </div>
+
+            <div className="form-control">
+              <label className="label"><span className="label-text font-medium">Gender</span></label>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="gender" className="radio radio-primary" value="male"
+                    checked={formData.gender === "male"}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })} />
+                  <span>Male</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="gender" className="radio radio-primary" value="female"
+                    checked={formData.gender === "female"}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })} />
+                  <span>Female</span>
+                </label>
               </div>
             </div>
 

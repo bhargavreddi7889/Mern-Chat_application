@@ -1,31 +1,46 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
+import { User } from "../models/user.model.js";
 
 export const protectRoute = async (req, res, next) => {
   try {
     const token = req.cookies.jwt;
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized - No Token Provided" });
+      console.log("No token found in cookies");
+      return res.status(401).json({ error: "Please login to continue" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      
+      if (!decoded?.userId) {
+        console.log("Invalid token format - no userId found");
+        res.cookie("jwt", "", { maxAge: 0 });
+        return res.status(401).json({ error: "Invalid token format" });
+      }
 
-    if (!decoded) {
-      return res.status(401).json({ message: "Unauthorized - Invalid Token" });
+      const user = await User.findById(decoded.userId).select("-password -__v");
+
+      if (!user) {
+        console.log("User not found for token:", decoded.userId);
+        res.cookie("jwt", "", { maxAge: 0 });
+        return res.status(401).json({ error: "User not found" });
+      }
+
+      req.user = user;
+      next();
+    } catch (err) {
+      console.error("Token verification error:", err);
+      res.cookie("jwt", "", { 
+        maxAge: 0,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+      });
+      return res.status(401).json({ error: "Invalid or expired token. Please login again." });
     }
-
-    const user = await User.findById(decoded.userId).select("-password");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    req.user = user;
-
-    next();
   } catch (error) {
-    console.log("Error in protectRoute middleware: ", error.message);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error in protectRoute middleware:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
